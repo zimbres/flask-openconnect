@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action={{ url_for('conn')}} method="post" id="form">
+    <div class="mb-3">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" name="username" {% if status != 'disconnected' %} disabled {% endif %} required autocomplete="off">
+    </div>
+    <div class="mb-3">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password"{% if status != 'disconnected' %} disabled {% endif %} required autocomplete="off">
+    </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="remember" {% if status != 'disconnected' %} disabled {% endif %}>
+        <label class="form-check-label" for="remember">Remember</label>
+    </div>
+    <button type="submit" class="button btn btn-secondary" {% if status != 'disconnected' %} disabled {% endif %} >
+        <span class="button__text">
+            {% if status == 'connected' %}
+            Connected
+            {% else %}
+            Connect
+            {% endif %}
+        </span>
+    </button>
+    <a class="button btn btn-danger {% if status == 'disconnected' %} disabled {% endif %}" href="{{ url_for('disc')}}" >Disconnect</a>
+  </form>
+
+<script>
+    const theButton = document.querySelector(".button");
+    document.getElementById("form").onsubmit = function () {
+        animate()
+    };
+
+    function animate() {
+        theButton.classList.add("button--loading");
+    }
+</script>
+
+{% endblock %}
